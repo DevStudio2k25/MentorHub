@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { collection, getDocs } from "firebase/firestore"
+import { ref, get } from "firebase/database"
 import { db } from "@/lib/firebase"
 import { useAuth } from "@/contexts/auth-context"
 import DashboardLayout from "@/components/layout/dashboard-layout"
@@ -40,28 +40,29 @@ export default function AdminReports() {
       if (!userData) return
 
       try {
-        // Fetch all users
-        const usersSnapshot = await getDocs(collection(db, "users"))
-        const usersData = usersSnapshot.docs.reduce(
-          (acc, doc) => {
-            acc[doc.id] = { uid: doc.id, ...doc.data() } as User
-            return acc
-          },
-          {} as Record<string, User>,
-        )
+        // Fetch all users from Realtime Database
+        const usersSnapshot = await get(ref(db, "users"))
+        let usersData: Record<string, User> = {}
+        if (usersSnapshot.exists()) {
+          usersData = usersSnapshot.val()
+        }
         setUsers(usersData)
 
-        // Fetch all reports
-        const reportsSnapshot = await getDocs(collection(db, "reports"))
-        const reportsData = reportsSnapshot.docs.map((doc) => ({
-          reportId: doc.id,
-          ...doc.data(),
-        })) as Report[]
+        // Fetch all reports from Realtime Database
+        const reportsSnapshot = await get(ref(db, "reports"))
+        let reportsData: Report[] = []
+        if (reportsSnapshot.exists()) {
+          const reportsObj = reportsSnapshot.val()
+          reportsData = Object.entries(reportsObj).map(([reportId, data]: [string, any]) => ({
+            reportId,
+            ...data,
+          })) as Report[]
+        }
 
         // Sort by timestamp (newest first)
         reportsData.sort((a, b) => {
-          const timeA = a.timestamp?.toMillis ? a.timestamp.toMillis() : 0
-          const timeB = b.timestamp?.toMillis ? b.timestamp.toMillis() : 0
+          const timeA = typeof a.timestamp === "number" ? a.timestamp : 0
+          const timeB = typeof b.timestamp === "number" ? b.timestamp : 0
           return timeB - timeA
         })
 
@@ -119,7 +120,11 @@ export default function AdminReports() {
                         <td className="py-3 px-4">{users[report.menteeId]?.name || "Unknown"}</td>
                         <td className="py-3 px-4">{users[report.mentorId]?.name || "Unknown"}</td>
                         <td className="py-3 px-4">
-                          {formatDate(report.timestamp?.toDate ? report.timestamp.toDate() : new Date())}
+                          {formatDate(
+                            typeof report.timestamp === "number"
+                              ? new Date(report.timestamp)
+                              : new Date()
+                          )}
                         </td>
                         <td className="py-3 px-4">
                           <span
