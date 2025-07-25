@@ -490,7 +490,7 @@ export default function AdminUsers() {
                           <Label htmlFor="role" className="text-sm font-medium">Role</Label>
                           <Select
                             value={newMentor.role}
-                            onValueChange={(value) => {
+                            onValueChange={(value: string) => {
                               const role = value as "mentor" | "admin" | "admin+mentor";
                               // Generate random password for mentor role
                               if (role === "mentor" && newMentor.role !== "mentor") {
@@ -1004,7 +1004,7 @@ export default function AdminUsers() {
                                       <div className="flex justify-end space-x-2">
                                         <Select 
                                           value={selectedMentorIds[mentee.uid] || "none"}
-                                          onValueChange={(value) => handleSelectMentor(mentee.uid, value)}
+                                          onValueChange={(value: string) => handleSelectMentor(mentee.uid, value)}
                                         >
                                           <SelectTrigger className="w-[180px]">
                                             <SelectValue placeholder="Assign mentor" />
@@ -1124,7 +1124,7 @@ export default function AdminUsers() {
                                       <div className="flex justify-end space-x-2">
                                         <Select 
                                           value={selectedMentorIds[mentee.uid] || mentee.assignedMentorId || "none"}
-                                          onValueChange={(value) => handleSelectMentor(mentee.uid, value)}
+                                          onValueChange={(value: string) => handleSelectMentor(mentee.uid, value)}
                                         >
                                           <SelectTrigger className="w-[180px]">
                                             <SelectValue placeholder="Change mentor" />

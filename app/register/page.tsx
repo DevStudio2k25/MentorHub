@@ -18,7 +18,7 @@ export default function Register() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [role, setRole] = useState<"mentee" | "mentor">("mentee")
+  const [role, setRole] = useState<"mentee" | "mentor" | "admin">("mentee")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const { signUp, user, userData, loading } = useAuth()

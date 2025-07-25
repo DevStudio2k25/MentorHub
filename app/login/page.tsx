@@ -31,7 +31,9 @@ export default function Login() {
   const router = useRouter()
 
   useEffect(() => {
+    console.log("[Login] useEffect triggered", { user, userData, loading });
     if (!loading && user && userData) {
+      console.log("[Login] Redirecting to role-based page", userData.role);
       router.push(getRoleBasedRedirect(userData.role))
     }
   }, [user, userData, loading, router])
@@ -40,12 +42,13 @@ export default function Login() {
     e.preventDefault()
     setError("")
     setIsLoading(true)
-
+    console.log("[Login] Form submitted", { email, password });
     try {
       await signIn(email, password)
       // Redirect will happen in the useEffect
     } catch (error: any) {
       setError(error.message || "Failed to sign in")
+      console.error("[Login] Sign in error", error)
     } finally {
       setIsLoading(false)
     }

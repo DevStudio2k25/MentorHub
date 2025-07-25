@@ -8,7 +8,7 @@ import { getStorage } from "firebase/storage"
 const firebaseConfig = {
   apiKey: "AIzaSyB84FXYSgsCnPzUsJDEW_OLgNTBUfSxqV4",
   authDomain: "the-e-commerce-web.firebaseapp.com",
-  databaseURL: "https://the-e-commerce-web-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://the-e-commerce-web-default-rtdb.firebaseio.com",
   projectId: "the-e-commerce-web",
   storageBucket: "the-e-commerce-web.firebasestorage.app",
   messagingSenderId: "468604550726",

@@ -10,10 +10,13 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
+    console.log("[Home] useEffect triggered", { user, userData, loading });
     if (!loading) {
       if (user && userData) {
+        console.log("[Home] Redirecting to role-based page", userData.role);
         router.push(getRoleBasedRedirect(userData.role))
       } else {
+        console.log("[Home] Redirecting to /login");
         router.push("/login")
       }
     }
