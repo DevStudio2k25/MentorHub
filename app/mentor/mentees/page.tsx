@@ -559,7 +559,7 @@ export default function MentorMentees() {
               <Filter className="h-4 w-4 text-gray-500" />
               <Select 
                 value={selectedClassId || "all"} 
-                onValueChange={(value) => setSelectedClassId(value === "all" ? "" : value)}
+                onValueChange={(value: string) => setSelectedClassId(value === "all" ? "" : value)}
               >
                 <SelectTrigger className="w-[250px] border-amber-200 focus:ring-amber-500">
                   <SelectValue placeholder="Filter by class" />
@@ -576,7 +576,7 @@ export default function MentorMentees() {
             </div>
           </div>
           
-          <Dialog open={isDialogOpen} onOpenChange={(open) => {
+          <Dialog open={isDialogOpen} onOpenChange={(open: boolean) => {
             setIsDialogOpen(open);
             
             // When opening the dialog
@@ -706,7 +706,7 @@ export default function MentorMentees() {
                     <Label htmlFor="classId">Assign to Class</Label>
                     <Select 
                       value={newMentee.classId} 
-                      onValueChange={(value) => {
+                      onValueChange={(value: string) => {
                         // Handle "none" value
                         if (value === "none") {
                           setNewMentee({
